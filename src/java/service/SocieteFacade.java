@@ -6,6 +6,7 @@
 package service;
 
 import bean.Societe;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -28,5 +29,9 @@ public class SocieteFacade extends AbstractFacade<Societe> {
     public SocieteFacade() {
         super(Societe.class);
     }
-    
+
+    //----------------- code Hamid -----------------
+    public List<Societe> findAllSocietes() {
+        return this.findAll();
+    }
 }

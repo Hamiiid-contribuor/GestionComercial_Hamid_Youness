@@ -28,5 +28,16 @@ public class ClientFacade extends AbstractFacade<Client> {
     public ClientFacade() {
         super(Client.class);
     }
+
+    //------------------- code Hamid -----------------
     
+    public void createClient(Client client) {
+        this.create(client);
+    }
+    
+    
+    public void removeClient(Client client) {
+         this.remove(client);
+    }
+
 }

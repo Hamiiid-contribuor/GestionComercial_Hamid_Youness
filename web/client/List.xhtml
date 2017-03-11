@@ -14,8 +14,52 @@
         </ui:define>
 
         <ui:define name="body">
-            <h:form id="ClientListForm">
-                <p:panel header="#{bundle.ListClientTitle}">
+
+
+            <h:form id="ClientCreateForm">
+                <div>
+                  <br/>  
+                </div>
+                <p:fieldset legend="Ajout d'un nouveau Client" style="margin-bottom:20px">
+                    <p:panelGrid columns="8">
+
+                        <p:outputLabel value="Nom  : " for="nom" />
+                        <p:inputText id="nom" value="#{clientController.selected.nom}" title="nom" />
+
+                        <p:outputLabel value="Prenom  : " for="prenom" />
+                        <p:inputText id="prenom" value="#{clientController.selected.prenom}" title="prenom" />
+
+                        <p:outputLabel value="Adresse   : " for="adresse" />
+                        <p:inputText id="adresse" value="#{clientController.selected.adresse}" title="adresse" />
+
+                        <p:outputLabel value="Email  : " for="email" />
+                        <p:inputText id="email" value="#{clientController.selected.email}" title="email" />
+
+                        <p:outputLabel value="Telephone  : " for="telephone" />
+                        <p:inputText id="telephone" value="#{clientController.selected.telephone}" title="telephone" />
+
+                        <p:outputLabel value="Date Creation  :" style="display:block;width:95px" for="dateCreation" />
+                        <p:calendar id="dateCreation" style="display:block;width:200px" pattern="dd/MM/yyyy" value="#{clientController.selected.dateCreation}" title="dateCreation"  showOn="button"/>
+
+                        <p:outputLabel value="Societe  :" style="display:block;width:95px" for="societe" />
+                        <p:selectOneMenu id="societe" value="#{clientController.societe}" style="display:block;width:100px">
+                            <f:selectItem itemValue="#{null}" itemLabel="--Select--"/>
+                            <f:selectItems value="#{clientController.societes}"
+                                           var="societeItem"
+                                           itemValue="#{societeItem}"/>
+                        </p:selectOneMenu>
+
+                        <p:commandButton actionListener="#{clientController.createClient}"
+                                         value="Valider" 
+                                         update=":growl,:ClientListForm:datalist,ClientCreateForm" />
+
+                    </p:panelGrid>
+                </p:fieldset>
+            </h:form>
+
+
+            <p:fieldset legend="Liste des Client " style="margin-bottom:20px">
+                <h:form id="ClientListForm">
                     <p:dataTable id="datalist" value="#{clientController.items}" var="item"
                                  selectionMode="single" selection="#{clientController.selected}"
                                  paginator="true"
@@ -24,72 +68,49 @@
                                  rowsPerPageTemplate="10,20,30,40,50"
                                  >
 
-                        <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
-                        <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
-
                         <p:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListClientTitle_id}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.id}"/>
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListClientTitle_nom}"/>
+                                <h:outputText value="Nom"/>
                             </f:facet>
                             <h:outputText value="#{item.nom}"/>
                         </p:column>
                         <p:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListClientTitle_prenom}"/>
+                                <h:outputText value="Prenom"/>
                             </f:facet>
                             <h:outputText value="#{item.prenom}"/>
                         </p:column>
                         <p:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListClientTitle_adresse}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.adresse}"/>
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListClientTitle_telephone}"/>
+                                <h:outputText value="Telephone"/>
                             </f:facet>
                             <h:outputText value="#{item.telephone}"/>
                         </p:column>
                         <p:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListClientTitle_email}"/>
+                                <h:outputText value="Email"/>
                             </f:facet>
                             <h:outputText value="#{item.email}"/>
                         </p:column>
+
                         <p:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListClientTitle_dateCreation}"/>
+                                <h:outputText value="Action"/>
                             </f:facet>
-                            <h:outputText value="#{item.dateCreation}">
-                                <f:convertDateTime pattern="MM/dd/yyyy" />
-                            </h:outputText>
+                            <p:commandButton icon="ui-icon-trash" actionListener="#{clientController.destroyClient(item)}"
+                                           update=":ClientListForm:datalist"   style="width:30px;height:20px"/>
+
                         </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListClientTitle_societe}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.societe}"/>
-                        </p:column>
+
                         <f:facet name="footer">
-                            <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{clientController.prepareCreate}" update=":ClientCreateForm" oncomplete="PF('ClientCreateDialog').show()"/>
-                            <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundle.View}" update=":ClientViewForm" oncomplete="PF('ClientViewDialog').show()" disabled="#{empty clientController.selected}"/>
-                            <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}" update=":ClientEditForm" oncomplete="PF('ClientEditDialog').show()" disabled="#{empty clientController.selected}"/>
-                            <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundle.Delete}" actionListener="#{clientController.destroy}" update=":growl,datalist" disabled="#{empty clientController.selected}"/>
                         </f:facet>
                     </p:dataTable>
-                </p:panel>
-            </h:form>
+                </h:form>
+            </p:fieldset>
 
-            <ui:include src="Create.xhtml"/>
-            <ui:include src="Edit.xhtml"/>
-            <ui:include src="View.xhtml"/>
+
+
+
         </ui:define>
     </ui:composition>
 

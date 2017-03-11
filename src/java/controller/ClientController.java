@@ -1,11 +1,13 @@
 package controller;
 
 import bean.Client;
+import bean.Societe;
 import controller.util.JsfUtil;
 import controller.util.JsfUtil.PersistAction;
 import service.ClientFacade;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -25,13 +27,22 @@ public class ClientController implements Serializable {
 
     @EJB
     private service.ClientFacade ejbFacade;
+    @EJB
+    private service.SocieteFacade societeFacade;
+
     private List<Client> items = null;
     private Client selected;
+    private Societe societe;
+
+    private List<Societe> societes;
 
     public ClientController() {
     }
 
     public Client getSelected() {
+        if (selected == null) {
+            selected = new Client();
+        }
         return selected;
     }
 
@@ -77,6 +88,7 @@ public class ClientController implements Serializable {
     public List<Client> getItems() {
         if (items == null) {
             items = getFacade().findAll();
+            System.out.println("ha lista dial les clients -->" + items);
         }
         return items;
     }
@@ -159,6 +171,48 @@ public class ClientController implements Serializable {
                 return null;
             }
         }
+
+    }
+
+    //---------------------- code Hamid ----------------
+    public List<Societe> getSocietes() {
+        if (societes == null) {
+            societes = societeFacade.findAllSocietes();
+        }
+        return societes;
+    }
+
+    public void setSocietes(List<Societe> societes) {
+        this.societes = societes;
+    }
+
+    public Societe getSociete() {
+        if (societe == null) {
+            societe = new Societe();
+        }
+        return societe;
+    }
+
+    public void setSociete(Societe societe) {
+        this.societe = societe;
+    }
+
+    public void createClient() {
+        selected.setSociete(societe);
+        ejbFacade.createClient(selected);
+        System.out.println("ha le client  a ajouter -->" + selected);
+        items.add(selected);
+        JsfUtil.addSuccessMessage("client bien ajouter");
+
+        selected = new Client();
+
+    }
+
+    public void destroyClient(Client client) {
+
+        ejbFacade.removeClient(client);
+        items.remove(client);
+        JsfUtil.addSuccessMessage("Client bien supprimer");
 
     }
 

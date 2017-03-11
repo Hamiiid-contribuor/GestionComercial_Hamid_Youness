@@ -25,7 +25,7 @@ public class Societe implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nom;
     private String email;
@@ -173,7 +173,7 @@ public class Societe implements Serializable {
 
     @Override
     public String toString() {
-        return "Societe{" + "id=" + id + ", nom=" + nom + ", email=" + email + ", telephone=" + telephone + ", fax=" + fax + ", adresse=" + adresse + ", siteWeb=" + siteWeb + ", proprietaire=" + proprietaire + ", secteurActivite=" + secteurActivite + ", clients=" + clients + '}';
+        return "societe ( "+nom+" )";
     }
 
 }
