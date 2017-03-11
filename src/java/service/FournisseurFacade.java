@@ -29,4 +29,22 @@ public class FournisseurFacade extends AbstractFacade<Fournisseur> {
         super(Fournisseur.class);
     }
     
+    
+      //------------------- code Hamid -----------------
+    
+    public void createFournisseur(Fournisseur fournisseur ) {
+        this.create(fournisseur);
+    }
+    
+    public void editFournisseur(Fournisseur fournisseur) {
+        this.edit(fournisseur);
+    }
+    
+    
+    public void removeFournisseur(Fournisseur fournisseur) {
+         this.remove(fournisseur);
+    }
+
+    
+    
 }

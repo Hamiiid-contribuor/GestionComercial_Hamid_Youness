@@ -24,16 +24,16 @@
                     <p:panelGrid columns="8">
 
                         <p:outputLabel value="Nom  : " for="nom" />
-                        <p:inputText id="nom" value="#{clientController.selected.nom}" title="nom" />
+                        <p:inputText style=" width: 150px " id="nom" value="#{clientController.selected.nom}" title="nom" />
 
                         <p:outputLabel value="Prenom  : " for="prenom" />
                         <p:inputText id="prenom" value="#{clientController.selected.prenom}" title="prenom" />
 
                         <p:outputLabel value="Adresse   : " for="adresse" />
-                        <p:inputText id="adresse" value="#{clientController.selected.adresse}" title="adresse" />
+                        <p:inputText style=" width: 250px " id="adresse" value="#{clientController.selected.adresse}" title="adresse" />
 
                         <p:outputLabel value="Email  : " for="email" />
-                        <p:inputText id="email" value="#{clientController.selected.email}" title="email" />
+                        <p:inputText style=" width: 200px " id="email" value="#{clientController.selected.email}" title="email" />
 
                         <p:outputLabel value="Telephone  : " for="telephone" />
                         <p:inputText id="telephone" value="#{clientController.selected.telephone}" title="telephone" />
@@ -42,23 +42,28 @@
                         <p:calendar id="dateCreation" style="display:block;width:200px" pattern="dd/MM/yyyy" value="#{clientController.selected.dateCreation}" title="dateCreation"  showOn="button"/>
 
                         <p:outputLabel value="Societe  :" style="display:block;width:95px" for="societe" />
-                        <p:selectOneMenu id="societe" value="#{clientController.societe}" style="display:block;width:100px">
+                       
+                        <p:selectOneMenu  id="societe" value="#{clientController.selected.societe}" style="display:block;width:200px">
                             <f:selectItem itemValue="#{null}" itemLabel="--Select--"/>
                             <f:selectItems value="#{clientController.societes}"
                                            var="societeItem"
                                            itemValue="#{societeItem}"/>
                         </p:selectOneMenu>
 
-                        <p:commandButton actionListener="#{clientController.createClient}"
+                        
+                    </p:panelGrid>
+                    <p:commandButton style="margin-left: 1100px ; witdh: 150px ;" actionListener="#{clientController.createClient}"
                                          value="Valider" 
                                          update=":growl,:ClientListForm:datalist,ClientCreateForm" />
+                    <p:commandButton actionListener="#{clientController.cleanView}"
+                                         value="Nettoyer" 
+                                         update=":ClientCreateForm" />
 
-                    </p:panelGrid>
                 </p:fieldset>
             </h:form>
 
 
-            <p:fieldset legend="Liste des Client " style="margin-bottom:20px">
+            <p:fieldset legend="Liste des Clients " style="margin-bottom:20px">
                 <h:form id="ClientListForm">
                     <p:dataTable id="datalist" value="#{clientController.items}" var="item"
                                  selectionMode="single" selection="#{clientController.selected}"
@@ -98,7 +103,9 @@
                                 <h:outputText value="Action"/>
                             </f:facet>
                             <p:commandButton icon="ui-icon-trash" actionListener="#{clientController.destroyClient(item)}"
-                                           update=":ClientListForm:datalist"   style="width:30px;height:20px"/>
+                                           update=":growl,:ClientListForm:datalist"   style="width:30px;height:20px"/>
+                            <p:commandButton icon="ui-icon-pencil" actionListener="#{clientController.editClient(item)}"
+                                           update=":ClientCreateForm"   style="width:30px;height:20px"/>
 
                         </p:column>
 

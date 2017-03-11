@@ -1,11 +1,15 @@
 package controller.util;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.model.SelectItem;
+import javax.servlet.http.HttpServletResponse;
 
 public class JsfUtil {
 
@@ -47,6 +51,11 @@ public class JsfUtil {
         FacesContext.getCurrentInstance().addMessage(null, facesMsg);
     }
 
+    public static void addWrningMessage(String msg) {
+        FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, msg, msg);
+        FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+    }
+
     public static void addSuccessMessage(String msg) {
         FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, msg);
         FacesContext.getCurrentInstance().addMessage("successInfo", facesMsg);
@@ -61,7 +70,21 @@ public class JsfUtil {
         return converter.getAsObject(FacesContext.getCurrentInstance(), component, theId);
     }
 
+    public static void rediredct(String url) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
+        if (!url.endsWith("xhtml")) {
+            url += ".xhtml";
+        }
+        try {
+            response.sendRedirect(url);
+        } catch (IOException ex) {
+            Logger.getLogger(JsfUtil.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     public static enum PersistAction {
+
         CREATE,
         DELETE,
         UPDATE

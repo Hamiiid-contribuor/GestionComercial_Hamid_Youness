@@ -4,6 +4,8 @@ import bean.Client;
 import bean.Societe;
 import controller.util.JsfUtil;
 import controller.util.JsfUtil.PersistAction;
+import controller.util.Message;
+import controller.util.MessageManager;
 import service.ClientFacade;
 
 import java.io.Serializable;
@@ -32,9 +34,10 @@ public class ClientController implements Serializable {
 
     private List<Client> items = null;
     private Client selected;
-    private Societe societe;
 
     private List<Societe> societes;
+
+    private Message message;
 
     public ClientController() {
     }
@@ -186,26 +189,27 @@ public class ClientController implements Serializable {
         this.societes = societes;
     }
 
-    public Societe getSociete() {
-        if (societe == null) {
-            societe = new Societe();
-        }
-        return societe;
-    }
-
-    public void setSociete(Societe societe) {
-        this.societe = societe;
-    }
-
     public void createClient() {
-        selected.setSociete(societe);
-        ejbFacade.createClient(selected);
-        System.out.println("ha le client  a ajouter -->" + selected);
-        items.add(selected);
-        JsfUtil.addSuccessMessage("client bien ajouter");
 
-        selected = new Client();
+        validateClientParams();
+        //lorsque tous les params sont injectés 
+        if (message.getResultat() > 0) {
 
+            ejbFacade.createClient(selected);
+            items.add(selected);
+            //c'est pour vider les input d'ajout 
+            selected = new Client();
+        }
+        MessageManager.showMessage(message);
+
+    }
+
+    public void editClient(Client client) {
+        this.selected = client;
+    }
+
+    public void cleanView() {
+        this.selected = new Client();
     }
 
     public void destroyClient(Client client) {
@@ -214,6 +218,26 @@ public class ClientController implements Serializable {
         items.remove(client);
         JsfUtil.addSuccessMessage("Client bien supprimer");
 
+    }
+
+    private void validateClientParams() {
+
+        System.out.println("voila le client  a persité --->"+selected);
+        if (getSelected().getNom().equals("")) {
+            message = MessageManager.createErrorMessage(-1, "Merci de spécifier le nom du client");
+        } else if (getSelected().getPrenom().equals("")) {
+            message = MessageManager.createErrorMessage(-2, "Merci de spécifier le prenom du client");
+        } else if (getSelected().getAdresse().equals("")) {
+            message = MessageManager.createErrorMessage(-3, "Merci de spécifier l'adresse du client");
+        } else if (getSelected().getEmail().equals("")) {
+            message = MessageManager.createErrorMessage(-4, "Merci de spécifier l'email du client");
+        } else if (getSelected().getTelephone().equals("")) {
+            message = MessageManager.createErrorMessage(-5, "Merci de spécifier le telephone du client");
+        } else if (getSelected().getSociete() == null) {
+            message = MessageManager.createErrorMessage(-6, "Merci de selectionné la societé auquelle apartient votre client");
+        } else {
+            message = MessageManager.createInfoMessage(1, "Client crée avec Succces ");
+        }
     }
 
 }

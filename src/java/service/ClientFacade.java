@@ -35,6 +35,10 @@ public class ClientFacade extends AbstractFacade<Client> {
         this.create(client);
     }
     
+    public void editClient(Client client) {
+        this.edit(client);
+    }
+    
     
     public void removeClient(Client client) {
          this.remove(client);

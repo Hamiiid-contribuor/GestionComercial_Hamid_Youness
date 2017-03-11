@@ -1,8 +1,12 @@
 package controller;
 
+import bean.Client;
 import bean.Fournisseur;
+import bean.Societe;
 import controller.util.JsfUtil;
 import controller.util.JsfUtil.PersistAction;
+import controller.util.Message;
+import controller.util.MessageManager;
 import service.FournisseurFacade;
 
 import java.io.Serializable;
@@ -28,10 +32,16 @@ public class FournisseurController implements Serializable {
     private List<Fournisseur> items = null;
     private Fournisseur selected;
 
+    private Message message;
+
     public FournisseurController() {
     }
 
     public Fournisseur getSelected() {
+        if (selected == null) {
+            selected = new Fournisseur();
+        }
+
         return selected;
     }
 
@@ -160,6 +170,56 @@ public class FournisseurController implements Serializable {
             }
         }
 
+    }
+
+    //---------------------- code Hamid ----------------
+    public void createFournisseur() {
+
+        validateClientParams();
+        //lorsque tous les params sont injectés 
+        if (message.getResultat() > 0) {
+
+            ejbFacade.createFournisseur(selected);
+            items.add(selected);
+            //c'est pour vider les input d'ajout 
+            selected = new Fournisseur();
+        }
+        MessageManager.showMessage(message);
+
+    }
+
+    public void editFournisseur(Fournisseur fournisseur) {
+        this.selected = fournisseur;
+    }
+
+    public void cleanView() {
+        this.selected = new Fournisseur();
+    }
+
+    public void destroyFournisseur(Fournisseur fournisseur) {
+
+        ejbFacade.removeFournisseur(fournisseur);
+        items.remove(fournisseur);
+        JsfUtil.addSuccessMessage("Fournisseur bien supprimer");
+
+    }
+
+    private void validateClientParams() {
+
+        System.out.println("voila le client  a persité --->" + selected);
+        if (getSelected().getNom().equals("")) {
+            message = MessageManager.createErrorMessage(-1, "Merci de spécifier le nom du fournisseur");
+        } else if (getSelected().getPrenom().equals("")) {
+            message = MessageManager.createErrorMessage(-2, "Merci de spécifier le prenom du fournisseur");
+        } else if (getSelected().getAdresse().equals("")) {
+            message = MessageManager.createErrorMessage(-3, "Merci de spécifier l'adresse du fournisseur");
+        } else if (getSelected().getEmail().equals("")) {
+            message = MessageManager.createErrorMessage(-4, "Merci de spécifier l'email du fournisseur");
+        } else if (getSelected().getTelephone().equals("")) {
+            message = MessageManager.createErrorMessage(-5, "Merci de spécifier le telephone du fournisseur");
+        } else {
+            message = MessageManager.createInfoMessage(1, "Fournisseur crée avec Succces ");
+        }
     }
 
 }
