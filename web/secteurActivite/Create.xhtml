@@ -17,7 +17,7 @@
                         <p:outputLabel value="#{bundle.CreateSecteurActiviteLabel_nom}" for="nom" />
                         <p:inputText id="nom" value="#{secteurActiviteController.selected.nom}" title="#{bundle.CreateSecteurActiviteTitle_nom}" />
                     </p:panelGrid>
-                    <p:commandButton actionListener="#{secteurActiviteController.create}" value="#{bundle.Save}" update="display,:SecteurActiviteListForm:datalist,:growl" oncomplete="handleSubmit(args,'SecteurActiviteCreateDialog');"/>
+                    <p:commandButton actionListener="#{secteurActiviteController.create}" value="#{bundle.Save}"  oncomplete="handleSubmit(args,'SecteurActiviteCreateDialog');"/>
                     <p:commandButton value="#{bundle.Cancel}" onclick="SecteurActiviteCreateDialog.hide()"/>
                 </h:panelGroup>
             </h:form>

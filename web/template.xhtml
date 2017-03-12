@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <h:head>
         <title><ui:insert name="title">Default Title</ui:insert></title>
@@ -26,13 +27,16 @@
                             <p:menuitem value="SecteurActivite" outcome="/secteurActivite/List.xhtml" />
                             <p:menuitem value="Societe" outcome="/societe/List.xhtml" />
                         </p:submenu>
+                        <f:facet name="options">
+                            <p:commandButton type="button" value="Deconexion" icon="ui-icon-extlink" />
+                        </f:facet>
                     </p:menubar>
                 </h:form>
             </p:layoutUnit>
 
             <p:layoutUnit position="south" size="60">
                 <ui:insert name="footer"/>
-                
+
                 <h3 style="text-align: center ;">Gestion commercial , Copyright@ 2017 </h3>
             </p:layoutUnit>
 
