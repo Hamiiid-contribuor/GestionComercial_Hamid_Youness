@@ -72,7 +72,7 @@ public class SecteurActivite implements Serializable {
 
     @Override
     public String toString() {
-        return "SecteurActivite{" + "id=" + id + ", nom=" + nom + '}';
+        return this.nom;
     }
 
 }

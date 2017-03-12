@@ -1,11 +1,17 @@
 package controller;
 
+import bean.Client;
+import bean.Fournisseur;
+import bean.SecteurActivite;
 import bean.Societe;
 import controller.util.JsfUtil;
 import controller.util.JsfUtil.PersistAction;
+import controller.util.Message;
+import controller.util.MessageManager;
 import service.SocieteFacade;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -25,13 +31,29 @@ public class SocieteController implements Serializable {
 
     @EJB
     private service.SocieteFacade ejbFacade;
+    @EJB
+    private service.SecteurActiviteFacade secteurActiviteFacade;
+
+    @EJB
+    private service.ClientFacade clientFacade;
+
     private List<Societe> items = null;
     private Societe selected;
+
+    private Message message;
+
+    private List<SecteurActivite> secteurActivites;
+    private int booleanSwitch = 0;
+
+    private List<Client> clients;
 
     public SocieteController() {
     }
 
     public Societe getSelected() {
+        if (selected == null) {
+            selected = new Societe();
+        }
         return selected;
     }
 
@@ -160,6 +182,96 @@ public class SocieteController implements Serializable {
             }
         }
 
+    }
+
+    //---------------------- code Hamid ----------------
+    public List<SecteurActivite> getSecteurActivites() {
+        if (secteurActivites == null) {
+            this.secteurActivites = secteurActiviteFacade.findAllSecteurActivites();
+
+        }
+        return secteurActivites;
+    }
+
+    public void setSecteurActivites(List<SecteurActivite> secteurActivites) {
+        this.secteurActivites = secteurActivites;
+    }
+
+    public int getBooleanSwitch() {
+        return booleanSwitch;
+    }
+
+    public void setBooleanSwitch(int booleanSwitch) {
+        this.booleanSwitch = booleanSwitch;
+    }
+
+    public List<Client> getClients() {
+        if (clients == null) {
+            clients = new ArrayList<>();
+        }
+        return clients;
+    }
+
+    public void setClients(List<Client> clients) {
+        this.clients = clients;
+    }
+
+    public void createSociete() {
+
+        validateSocieteParams();
+        //lorsque tous les params sont injectés 
+        if (message.getResultat() > 0) {
+
+            ejbFacade.createSociete(selected);
+            items.add(selected);
+            //c'est pour vider les input d'ajout 
+            selected = new Societe();
+        }
+        MessageManager.showMessage(message);
+
+    }
+
+    public void editSociete(Societe societe) {
+        this.selected = societe;
+    }
+
+    public void cleanView() {
+        this.selected = new Societe();
+    }
+
+    public void destroySociete(Societe societe) {
+
+        ejbFacade.removeSociete(societe);
+        items.remove(societe);
+        JsfUtil.addSuccessMessage("Societé bien supprimer");
+        
+
+    }
+
+    private void validateSocieteParams() {
+
+        System.out.println("voila la societe  a persité --->" + selected);
+        if (getSelected().getNom().equals("")) {
+            message = MessageManager.createErrorMessage(-1, "Merci de spécifier le nom du societé");
+        } else if (getSelected().getProprietaire().equals("")) {
+            message = MessageManager.createErrorMessage(-2, "Merci de spécifier le nom/prenom du proprietaire du societé");
+        } else if (getSelected().getAdresse().equals("")) {
+            message = MessageManager.createErrorMessage(-3, "Merci de spécifier l'adresse du societé");
+        } else if (getSelected().getEmail().equals("")) {
+            message = MessageManager.createErrorMessage(-4, "Merci de spécifier l'email du societé");
+        } else if (getSelected().getTelephone().equals("")) {
+            message = MessageManager.createErrorMessage(-5, "Merci de spécifier le telephone du societé");
+        } else {
+            message = MessageManager.createInfoMessage(1, "Societé crée avec Succces ");
+        }
+    }
+
+    public void rechercheClientParSociete(Long idSociete) {
+        System.out.println("ha l'id dial societe -->" + idSociete);
+        booleanSwitch = 1;
+//        selected = societe;
+        clients = clientFacade.rechercheClientParSociete(idSociete);
+        System.out.println("ha les clients lifelcontroller -->  "+clients);
     }
 
 }

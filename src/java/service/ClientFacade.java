@@ -6,6 +6,8 @@
 package service;
 
 import bean.Client;
+import bean.Societe;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -30,18 +32,25 @@ public class ClientFacade extends AbstractFacade<Client> {
     }
 
     //------------------- code Hamid -----------------
-    
     public void createClient(Client client) {
         this.create(client);
     }
-    
+
     public void editClient(Client client) {
         this.edit(client);
     }
-    
-    
+
     public void removeClient(Client client) {
-         this.remove(client);
+        this.remove(client);
+    }
+
+    public List<Client> rechercheClientParSociete(Long idScociete) {
+
+        String requette = "SELECT c FROM Client c WHERE c.societe.id = " +idScociete;
+        System.out.println("ha requette --> "+requette);
+        List<Client> clients = em.createQuery(requette).getResultList();
+        System.out.println("voila la liste des client par societe --->" + clients);
+        return clients;
     }
 
 }

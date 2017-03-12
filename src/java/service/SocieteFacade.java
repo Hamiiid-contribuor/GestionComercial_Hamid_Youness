@@ -5,6 +5,7 @@
  */
 package service;
 
+import bean.Fournisseur;
 import bean.Societe;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -34,4 +35,17 @@ public class SocieteFacade extends AbstractFacade<Societe> {
     public List<Societe> findAllSocietes() {
         return this.findAll();
     }
+
+    public void createSociete(Societe societe) {
+        this.create(societe);
+    }
+
+    public void editSociete(Societe societe) {
+        this.edit(societe);
+    }
+
+    public void removeSociete(Societe societe) {
+        this.remove(societe);
+    }
+
 }

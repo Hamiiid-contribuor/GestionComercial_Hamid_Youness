@@ -6,6 +6,8 @@
 package service;
 
 import bean.SecteurActivite;
+import bean.Societe;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -28,5 +30,10 @@ public class SecteurActiviteFacade extends AbstractFacade<SecteurActivite> {
     public SecteurActiviteFacade() {
         super(SecteurActivite.class);
     }
-    
+
+    //----------------- code Hamid -----------------
+    public List<SecteurActivite> findAllSecteurActivites() {
+        return this.findAll();
+    }
+
 }
