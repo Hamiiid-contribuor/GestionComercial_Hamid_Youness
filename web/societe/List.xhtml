@@ -53,7 +53,6 @@
                           
                         </p:selectOneMenu>
 
-                        <p:commandButton id="newSecteur" icon="ui-icon-plus" actionListener="#{secteurActiviteController.prepareCreate}" update="secteur" oncomplete="PF('SecteurActiviteCreateDialog').show()"/>
 
                     </p:panelGrid>
                     <p:commandButton style="margin-left: 1100px ; witdh: 150px ;" actionListener="#{societeController.createSociete}"
@@ -82,7 +81,7 @@
                                          resizableColumns="true"
                                          >
 
-                                <p:column>
+                                <p:column style="width: 150px">
                                     <f:facet name="header">
                                         <h:outputText value="Nom"/>
                                     </f:facet>
@@ -94,7 +93,7 @@
                                     </f:facet>
                                     <h:outputText value="#{item.proprietaire}"/>
                                 </p:column>
-                                <p:column>
+                                <p:column style="width: 80px">
                                     <f:facet name="header">
                                         <h:outputText value="Telephone"/>
                                     </f:facet>
@@ -107,7 +106,7 @@
                                     <h:outputText value="#{item.email}"/>
                                 </p:column>
 
-                                <p:column>
+                                <p:column style="width: 100px">
                                     <f:facet name="header">
                                         <h:outputText value="Action"/>
                                     </f:facet>
@@ -145,25 +144,19 @@
 
                                 <p:column>
                                     <f:facet name="header">
-                                        <h:outputText value="Nom"/>
+                                        <h:outputText value="Nom / Prenom"/>
                                     </f:facet>
-                                    <h:outputText value="#{ClientItem.nom}"/>
+                                    <h:outputText value="#{ClientItem.nom} #{ClientItem.prenom}"/>
                                 </p:column>
-                                <p:column>
-                                    <f:facet name="header">
-                                        <h:outputText value="Prenom"/>
-                                    </f:facet>
-                                    <h:outputText value="#{ClientItem.prenom}"/>
-                                </p:column>
-
+                               
                                 <p:column>
                                     <f:facet name="header">
                                         <h:outputText value="Email"/>
                                     </f:facet>
                                     <h:outputText value="#{ClientItem.email}"/>
                                 </p:column>
-                                <p:column>
-                                    <f:facet name="header">
+                                <p:column style="width: 80px">
+                                    <f:facet name="header" >
                                         <h:outputText value="Telephone"/>
                                     </f:facet>
                                     <h:outputText value="#{ClientItem.telephone}"/>
@@ -175,26 +168,7 @@
                 </div>
 
             </div>
-            <!--<ui:include src="../secteurActivite/Create.xhtml"/>-->
-            <p:dialog id="SecteurActiviteCreateDlg" widgetVar="SecteurActiviteCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateSecteurActiviteTitle}">
-                <h:form id="SecteurActiviteCreateForm">
-                    <h:panelGroup id="display">
-                        <p:panelGrid columns="2" rendered="#{secteurActiviteController.selected != null}">
-                            <p:outputLabel value="#{bundle.CreateSecteurActiviteLabel_id}" for="id" />
-                            <p:inputText id="id" value="#{secteurActiviteController.selected.id}" title="#{bundle.CreateSecteurActiviteTitle_id}" />
-                            <p:outputLabel value="#{bundle.CreateSecteurActiviteLabel_nom}" for="nom" />
-                            <p:inputText id="nom" value="#{secteurActiviteController.selected.nom}" title="#{bundle.CreateSecteurActiviteTitle_nom}" />
-                        </p:panelGrid>
-                        <p:commandButton actionListener="#{secteurActiviteController.create}" value="#{bundle.Save}"  oncomplete="handleSubmit(args,'SecteurActiviteCreateDialog');"/>
-                        <p:commandButton value="#{bundle.Cancel}" onclick="SecteurActiviteCreateDialog.hide()"/>
-                    </h:panelGroup>
-                </h:form>
-            </p:dialog>
-
         </ui:define>
-
-
-
-
+     
     </ui:composition>
 </html>
