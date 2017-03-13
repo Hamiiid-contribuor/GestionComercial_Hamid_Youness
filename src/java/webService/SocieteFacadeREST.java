@@ -10,11 +10,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -60,4 +56,11 @@ public class SocieteFacadeREST extends AbstractFacade<Societe> {
     }
 
     //ci vous voulez  retourne xml  vous changer "MediaType.APPLICATION_JSON" par MediaType.APPLICATION_XML
+    @GET
+    @Path("count")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String countSociete() {
+        return "le nombre se societes est ---> " + String.valueOf(count());
+    }
+
 }
