@@ -15,12 +15,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author Lidrissi Hamid
  */
 @Entity
+@XmlRootElement
 public class Societe implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -126,6 +129,7 @@ public class Societe implements Serializable {
         this.secteurActivite = secteurActivite;
     }
 
+    @XmlTransient
     public List<Client> getClients() {
         return clients;
     }

@@ -46,11 +46,15 @@ public class ClientFacade extends AbstractFacade<Client> {
 
     public List<Client> rechercheClientParSociete(Long idScociete) {
 
-        String requette = "SELECT c FROM Client c WHERE c.societe.id = " +idScociete;
-        System.out.println("ha requette --> "+requette);
+        String requette = "SELECT c FROM Client c WHERE c.societe.id = " + idScociete;
+        System.out.println("ha requette --> " + requette);
         List<Client> clients = em.createQuery(requette).getResultList();
         System.out.println("voila la liste des client par societe --->" + clients);
         return clients;
     }
 
+    // test  for webservices 
+    public List<Client> listOfClients() {
+        return findAll();
+    }
 }
